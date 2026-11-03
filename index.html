@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Recorded</title>
+  <meta name="description" content="Watch and download YouTube videos through public Invidious and Piped instances.">
+  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="#0d0d0d">
+  <meta property="og:title" content="Recorded">
+  <meta property="og:description" content="Watch and download YouTube videos through Invidious and Piped.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="./assets/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./assets/icon-192.png">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./assets/app.css">
+  <script>
+    // Set the theme before first paint so there is no flash.
+    try {
+      var saved = JSON.parse(localStorage.getItem('recorded:prefs:v2') || '{}');
+      var mode = saved.theme || 'dark';
+      var light = mode === 'light' || (mode === 'system' && matchMedia('(prefers-color-scheme: light)').matches);
+      document.documentElement.dataset.theme = light ? 'light' : 'dark';
+    } catch (_) {}
+  </script>
+</head>
+<body>
+  <a class="rc-skip" href="#app">Skip to content</a>
+
+  <svg class="rc-sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="m8 5 11 7-11 7Z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.83 2.83-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21h-4v-.09A1.7 1.7 0 0 0 8.6 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06-2.83-2.83.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3v-4h.09A1.7 1.7 0 0 0 4.6 8.6a1.7 1.7 0 0 0-.34-1.88l-.06-.06 2.83-2.83.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3h4v.09A1.7 1.7 0 0 0 15.4 4.6a1.7 1.7 0 0 0 1.88-.34l.06-.06 2.83 2.83-.06.06A1.7 1.7 0 0 0 19.4 9c.14.37.35.7.6 1 .3.3.68.44 1.1.4H21v4h-.09a1.7 1.7 0 0 0-1.51.6Z"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M20 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h5"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 5 5L20 7"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 6v5h-5"/><path d="M4 18v-5h5"/><path d="M6.1 9A7 7 0 0 1 18.7 7.3L20 11M4 13l1.3 3.7A7 7 0 0 0 17.9 15"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 5 6v6c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V5l10-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="16" cy="16" r="3"/></symbol>
+    <symbol id="i-closed-caption" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 10a2.5 2.5 0 1 0 0 4M17 10a2.5 2.5 0 1 0 0 4"/></symbol>
+  </svg>
+
+  <header class="rc-header" data-rc="header">
+    <div class="rc-shell rc-header__inner">
+      <a class="rc-brand" href="#/" aria-label="Recorded home">
+        <span class="rc-brand__name">Recorded</span>
+      </a>
+
+      <form class="rc-search" role="search" data-rc="search" id="search-form" autocomplete="off">
+        <svg class="rc-icon rc-search__icon" aria-hidden="true"><use href="#i-search"/></svg>
+        <label class="rc-sr-only" for="search-input">Search videos or paste a YouTube link</label>
+        <input id="search-input" name="q" type="search" inputmode="search" enterkeyhint="search"
+               placeholder="Search or paste a link" spellcheck="false" maxlength="200">
+        <button class="rc-search__clear" type="button" id="search-clear" aria-label="Clear search" hidden>
+          <svg class="rc-icon" aria-hidden="true"><use href="#i-x"/></svg>
+        </button>
+        <button class="rc-search__submit" type="submit" aria-label="Search">
+          <svg class="rc-icon" aria-hidden="true"><use href="#i-search"/></svg>
+        </button>
+        <div class="rc-suggest" id="suggestions" role="listbox" aria-label="Search suggestions" hidden></div>
+      </form>
+
+      <nav class="rc-nav" aria-label="Primary">
+        <a class="rc-nav__link" href="#/" data-nav="home">Trending</a>
+        <a class="rc-nav__link" href="#/settings" data-nav="settings">Settings</a>
+        <button class="rc-instance" id="instance-button" type="button" title="Choose instance">
+          <span class="rc-instance__dot" id="instance-dot" aria-hidden="true"></span>
+          <span class="rc-instance__name" id="instance-name">connecting</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="rc-main rc-shell" id="app" tabindex="-1"></main>
+
+  <footer class="rc-footer rc-shell" data-rc="footer">
+    <div class="rc-footer__left">
+      <span>Recorded</span>
+    </div>
+    <div class="rc-footer__links">
+      <a href="#/theme">Theme</a>
+      <a href="#/settings">Settings</a>
+      <button type="button" data-open-shortcuts>Shortcuts</button>
+      <span class="rc-footer__privacy">No accounts. No analytics.</span>
+    </div>
+  </footer>
+
+  <dialog class="rc-dialog" id="instance-dialog" aria-labelledby="instance-dialog-title">
+    <div class="rc-dialog__head">
+      <div>
+        <h2 id="instance-dialog-title">Instances</h2>
+        <p class="rc-muted">Choose a server. Auto uses the fastest healthy one.</p>
+      </div>
+      <button class="rc-iconbtn" type="button" data-close-dialog aria-label="Close">
+        <svg class="rc-icon" aria-hidden="true"><use href="#i-x"/></svg>
+      </button>
+    </div>
+    <div class="rc-dialog__body" id="instance-list"></div>
+    <div class="rc-dialog__foot">
+      <button class="rc-btn rc-btn--ghost" type="button" id="instance-retest">
+        <svg class="rc-icon" aria-hidden="true"><use href="#i-refresh"/></svg> Test all
+      </button>
+    </div>
+  </dialog>
+
+  <dialog class="rc-dialog rc-dialog--wide" id="download-dialog" aria-labelledby="download-dialog-title">
+    <div class="rc-dialog__head">
+      <div>
+        <h2 id="download-dialog-title">Download</h2>
+        <p class="rc-muted" id="download-dialog-sub">Choose a format.</p>
+      </div>
+      <button class="rc-iconbtn" type="button" data-close-dialog aria-label="Close">
+        <svg class="rc-icon" aria-hidden="true"><use href="#i-x"/></svg>
+      </button>
+    </div>
+    <div class="rc-dialog__body" id="download-list"></div>
+    <div class="rc-dialog__foot">
+      <p class="rc-muted rc-small" id="download-note">Video-only files have no sound. Audio-only files are audio tracks.</p>
+    </div>
+  </dialog>
+
+  <dialog class="rc-dialog" id="shortcuts-dialog" aria-labelledby="shortcuts-title">
+    <div class="rc-dialog__head">
+      <div><h2 id="shortcuts-title">Keyboard</h2></div>
+      <button class="rc-iconbtn" type="button" data-close-dialog aria-label="Close">
+        <svg class="rc-icon" aria-hidden="true"><use href="#i-x"/></svg>
+      </button>
+    </div>
+    <div class="rc-dialog__body">
+      <dl class="rc-shortcuts">
+        <div><dt><kbd>/</kbd></dt><dd>Focus search</dd></div>
+        <div><dt><kbd>k</kbd> or <kbd>space</kbd></dt><dd>Play / pause</dd></div>
+        <div><dt><kbd>j</kbd> <kbd>l</kbd></dt><dd>Seek 10 seconds</dd></div>
+        <div><dt><kbd>m</kbd></dt><dd>Mute</dd></div>
+        <div><dt><kbd>f</kbd></dt><dd>Fullscreen</dd></div>
+        <div><dt><kbd>d</kbd></dt><dd>Downloads</dd></div>
+        <div><dt><kbd>a</kbd></dt><dd>Audio mode</dd></div>
+        <div><dt><kbd>,</kbd> <kbd>.</kbd></dt><dd>Slower / faster</dd></div>
+        <div><dt><kbd>?</kbd></dt><dd>This sheet</dd></div>
+      </dl>
+    </div>
+  </dialog>
+
+  <div class="rc-toasts" id="toasts" aria-live="polite" aria-atomic="false"></div>
+
+  <noscript>
+    <div class="rc-noscript">Recorded needs JavaScript to reach its video instances.</div>
+  </noscript>
+
+  <script type="module" src="./assets/app.js"></script>
+</body>
+</html>

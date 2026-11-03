@@ -1,0 +1,10 @@
+# Keep the site static and dependency-free.
+.DS_Store
+Thumbs.db
+*.log
+node_modules/
+vendor/
+dist/
+.env
+.env.*
+!.env.example

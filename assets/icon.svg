@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Recorded">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="42%" r="62%">
+      <stop offset="0" stop-color="#ff3b5c" stop-opacity=".28"/>
+      <stop offset="1" stop-color="#ff3b5c" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="#0a0a0d"/>
+  <circle cx="256" cy="248" r="196" fill="url(#glow)"/>
+  <circle cx="256" cy="248" r="138" fill="none" stroke="#2a2a36" stroke-width="4"/>
+  <circle cx="256" cy="248" r="118" fill="none" stroke="#1a1a23" stroke-width="22"/>
+  <circle cx="256" cy="248" r="92" fill="none" stroke="#2a2a36" stroke-width="3"/>
+  <circle cx="256" cy="248" r="58" fill="#ff3b5c"/>
+  <circle cx="256" cy="248" r="18" fill="#0a0a0d"/>
+  <rect x="370" y="122" width="66" height="24" rx="12" fill="#ff3b5c"/>
+  <circle cx="392" cy="134" r="5" fill="#0a0a0d"/>
+</svg>
